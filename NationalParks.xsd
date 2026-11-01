@@ -1,36 +1,35 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- CSE445 Assignment 4, Q1.1: schema for the directory of national parks (Figure 1) -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
-
-  <!-- Root element: one or more NationalPark elements -->
+<?xml version="1.0" encoding="utf-8"?>
+<!-- NationalParks.xsd: defines the structure of the national parks directory (Figure 1) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified">
   <xs:element name="NationalParks">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="NationalPark" type="NationalParkType" minOccurs="1" maxOccurs="unbounded"/>
+        <!-- each park appears as a NationalPark element -->
+        <xs:element name="NationalPark" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Name" type="xs:string" />
+              <!-- a park can list more than one phone number -->
+              <xs:element name="Phone" type="xs:string" maxOccurs="unbounded" />
+              <xs:element name="Address">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Number" type="xs:int" />
+                    <xs:element name="Street" type="xs:string" />
+                    <xs:element name="City" type="xs:string" />
+                    <xs:element name="State" type="xs:string" />
+                    <xs:element name="Zip" type="xs:int" />
+                  </xs:sequence>
+                  <!-- required attribute of Address -->
+                  <xs:attribute name="NearestAirport" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <!-- optional attribute of NationalPark -->
+            <xs:attribute name="Rating" type="xs:decimal" use="optional" />
+          </xs:complexType>
+        </xs:element>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-
-  <!-- A park: Name, one or more Phone, then Address (left-to-right order); Rating is optional -->
-  <xs:complexType name="NationalParkType">
-    <xs:sequence>
-      <xs:element name="Name" type="xs:string"/>
-      <xs:element name="Phone" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
-      <xs:element name="Address" type="AddressType"/>
-    </xs:sequence>
-    <xs:attribute name="Rating" type="xs:decimal" use="optional"/>
-  </xs:complexType>
-
-  <!-- Address: Number, Street, City, State, Zip; NearestAirport is required -->
-  <xs:complexType name="AddressType">
-    <xs:sequence>
-      <xs:element name="Number" type="xs:int"/>
-      <xs:element name="Street" type="xs:string"/>
-      <xs:element name="City" type="xs:string"/>
-      <xs:element name="State" type="xs:string"/>
-      <xs:element name="Zip" type="xs:int"/>
-    </xs:sequence>
-    <xs:attribute name="NearestAirport" type="xs:string" use="required"/>
-  </xs:complexType>
-
 </xs:schema>
